@@ -6,22 +6,12 @@
     "allowUnusedLabels": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "module": "commonjs",
     "target": "es5",
     "jsx": "react",
-    "lib": [
-      "es6",
-      "es2016",
-      "dom"
-    ],
+    "lib": ["es6", "es2016", "dom"],
     "removeComments": true,
     "experimentalDecorators": true
   },
-  "include": [
-    "app/**/*",
-    "scripts/**/*"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["app/**/*", "scripts/**/*"],
+  "exclude": ["node_modules"]
 }
