@@ -1,0 +1,55 @@
+{
+  "SsrLogGroup": {
+    "Properties": {
+      "RetentionInDays": "30"
+    }
+  },
+  "CloudFrontDistribution": {
+    "Type": "AWS::CloudFront::Distribution",
+    "Properties": {
+      "DistributionConfig": {
+        "ViewerCertificate": {
+          "AcmCertificateArn": "arn:aws:acm:us-east-1:966390130392:certificate/db902af7-a1ee-40ab-8145-9bd8b786ba39",
+          "SslSupportMethod": "sni-only"
+        },
+        "DefaultRootObject": "",
+        "Enabled": true,
+        "DefaultCacheBehavior": {
+          "AllowedMethods": ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"],
+          "CachedMethods": ["HEAD", "GET"],
+          "ForwardedValues": {
+            "QueryString": true
+          },
+          "MinTTL": 300,
+          "DefaultTTL": 300,
+          "MaxTTL": 300,
+          "TargetOriginId": "ssr-${opt:stage}-api-gateway",
+          "ViewerProtocolPolicy": "redirect-to-https"
+        },
+        "Aliases": ["join.pluto.network"],
+        "Origins": [
+          {
+            "CustomOriginConfig": {
+              "HTTPSPort": "443",
+              "OriginProtocolPolicy": "https-only"
+            },
+            "DomainName": {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Ref": "ApiGatewayRestApi"
+                  },
+                  ".execute-api.us-east-1.amazonaws.com"
+                ]
+              ]
+            },
+            "Id": "ssr-${opt:stage}-api-gateway",
+            "OriginPath": "/${opt:stage}/${file(./config.yml):service_name}"
+          }
+        ],
+        "PriceClass": "PriceClass_100"
+      }
+    }
+  }
+}
